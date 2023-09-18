@@ -26,3 +26,23 @@ while num_name_dish <= len(cook_list):
     num_line_ingredients += 3
 
 print('cook_book = ', cook_book)
+print()
+
+def get_shop_list_by_dishes(dishes, person_count):
+    shop_dict_by_dishes = {}
+    for dish in dishes:
+        shop_list_ingrediens = cook_book[dish]
+        for ingrediens in shop_list_ingrediens:
+            shop_dict_by_dishes[ingrediens['ingredient_name']] = {'measure' : ingrediens['measure'], 'quantity' : int(ingrediens['quantity']) * person_count}
+            # Проверка на повторы ингредиентов
+            list_key = list(shop_dict_by_dishes.keys())
+            list_key = list_key[:-1]
+            for key in list_key:
+                if key == ingrediens['ingredient_name']:
+                    bb = duplicate_key_shop_dict_by_dishes[key]
+                    shop_dict_by_dishes[ingrediens['ingredient_name']] = {'measure' : ingrediens['measure'], 'quantity' : int(ingrediens['quantity']) * person_count + bb['quantity']}
+            duplicate_key_shop_dict_by_dishes = {k: v for k, v in shop_dict_by_dishes.items()}
+    print(shop_dict_by_dishes)
+    return shop_dict_by_dishes
+
+get_shop_list_by_dishes(['Запеченный картофель', 'Омлет', 'Фахитос'], 1)
