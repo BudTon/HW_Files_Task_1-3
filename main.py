@@ -1,34 +1,38 @@
-cook_list = []
 
-with open('recipes.txt', encoding='Utf=8') as file:
-    for line in file:
-        cook_list.append(line.strip())
+def write_cook_list(file_name):
+    cook_list = []
+    with open(file_name, encoding='Utf=8') as file:
+        for line in file:
+            cook_list.append(line.strip())
+    print(cook_list)
+    print()
+    return cook_list
 
-cook_book = {}
-book_dict = {}
-one_dish_list =[]
-line_list =[]
-num_name_dish = 0
-ingredients_num = 1
-num_line_ingredients = 1
+def read_cook_book(cook_list):
+    cook_book = {}
+    one_dish_list =[]
+    num_name_dish = 0
+    ingredients_num = 1
+    num_line_ingredients = 1
 
-while num_name_dish <= len(cook_list):
-    num_line_end_ingredients = int(cook_list[ingredients_num]) + num_line_ingredients - 1
-    while num_line_ingredients <= num_line_end_ingredients:
-        num_line_ingredients += 1
-        line_list = cook_list[num_line_ingredients].split('|')
-        book_dict = {'ingredient_name': line_list[0], 'quantity': line_list[1], 'measure': line_list[2]}
-        one_dish_list.append(book_dict)
-    cook_book[cook_list[num_name_dish]] = one_dish_list
-    one_dish_list = []
-    num_name_dish += int(cook_list[ingredients_num]) + 3
-    ingredients_num += int(cook_list[ingredients_num]) + 3
-    num_line_ingredients += 3
+    while num_name_dish <= len(cook_list):
+        num_line_end_ingredients = int(cook_list[ingredients_num]) + num_line_ingredients - 1
+        while num_line_ingredients <= num_line_end_ingredients:
+            num_line_ingredients += 1
+            line_list = cook_list[num_line_ingredients].split('|')
+            book_dict = {'ingredient_name': line_list[0], 'quantity': line_list[1], 'measure': line_list[2]}
+            one_dish_list.append(book_dict)
+        cook_book[cook_list[num_name_dish]] = one_dish_list
+        one_dish_list = []
+        num_name_dish += int(cook_list[ingredients_num]) + 3
+        ingredients_num += int(cook_list[ingredients_num]) + 3
+        num_line_ingredients += 3
 
-print('cook_book = ', cook_book)
-print()
+    print('cook_book = ', cook_book)
+    print()
+    return cook_book
 
-def get_shop_list_by_dishes(dishes, person_count):
+def get_shop_list_by_dishes(dishes, person_count, cook_book):
     shop_dict_by_dishes = {}
     for dish in dishes:
         shop_list_ingrediens = cook_book[dish]
@@ -45,4 +49,6 @@ def get_shop_list_by_dishes(dishes, person_count):
     print(shop_dict_by_dishes)
     return shop_dict_by_dishes
 
-get_shop_list_by_dishes(['Запеченный картофель', 'Омлет', 'Фахитос'], 1)
+cook_list = write_cook_list('recipes.txt')
+cook_book = read_cook_book(cook_list)
+get_shop_list_by_dishes(['Запеченный картофель', 'Омлет', 'Фахитос'], 1, cook_book)
